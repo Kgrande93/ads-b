@@ -50,6 +50,40 @@ sudo apt install net-tools -y
 > `sudo systemctl status adsblol-feed adsblol-mlat` om tjenestene likevel
 > kjører før du antar noe er ødelagt.
 
+## Løst: `re-api.adsb.lol` gir 403 selv med riktig IP ("no healthy mlat")
+
+Hvis `re-api.adsb.lol` gir `403 Forbidden`/`Access denied` selv når du
+har verifisert at forespørselen kommer fra samme offentlige IP som
+feederen (bruk `curl -v` direkte fra VM-en, ikke bare nettleseren, for å
+utelukke NAT/VLAN/IPv6-forskjeller mellom klient og feeder), er den
+vanligste årsaken **at MLAT-tilkoblingen ikke regnes som "healthy" enda**
+- ikke et IP-problem.
+
+Sjekk feed-statusen din på https://adsb.lol (samme IP-baserte
+gjenkjenning som re-api bruker) og se på `mlat`-objektet i JSON-svaret:
+
+```json
+"mlat": [{
+  "peer_count": 0,
+  "outlier_percent": 0.0,
+  "bad_sync_timeout": 0
+}]
+```
+
+`peer_count: 0` betyr at MLAT-klienten ikke har synkronisert med andre
+nærliggende feedere enda - multilaterasjon krever at minst to andre
+stasjoner ser samme fly samtidig for å beregne posisjon via
+tidsforskjeller. Uten peers regnes MLAT-en som "ikke healthy", og
+`re-api` avviser deg selv om beast-feeden (port 30004) fungerer helt fint.
+
+Dette er **normal oppførsel rett etter en fersk installasjon eller
+restart**, ikke en feil. Sammenlign med `journalctl -u adsblol-mlat`:
+`Results: X positions/minute` bygger seg typisk opp fra 0 til et stabilt
+tall over 15-90 minutter etter oppstart, etter hvert som synk med
+nærliggende stasjoner etableres. La tjenesten kjøre uforstyrret (ikke
+restart den for å "fikse" det) og sjekk `peer_count`/
+`positions_per_second` periodisk til den er over 0.
+
 ## 1. adsb.lol (prioritert - dette er kilden vi bruker for flysøket)
 
 ```bash
