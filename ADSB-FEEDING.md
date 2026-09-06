@@ -64,8 +64,9 @@ curl -L -o /tmp/al-feed.sh https://raw.githubusercontent.com/airplanes-live/feed
 sudo bash /tmp/al-feed.sh
 ```
 
-**Verifiser**: logg inn på https://airplanes.live/myfeed og sjekk
-feed-status der.
+**Verifiser**: gå til https://airplanes.live/myfeed fra samme nettverk
+som mottakeren (siden viser status basert på IP-adressen til
+nettleseren din, ikke pålogging/konto).
 
 ## Alternativ: Docker/Ultrafeeder
 
@@ -92,6 +93,25 @@ full oppskrift: https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder
 | adsb.lol | `curl -L -o /tmp/lol-feed.sh https://adsb.lol/feed.sh && sudo bash /tmp/lol-feed.sh` | adsb.lol |
 | adsb.fi | `curl -L -o /tmp/fi-feed.sh https://adsb.fi/feed.sh && sudo bash /tmp/fi-feed.sh` | adsb.fi |
 | airplanes.live | `curl -L -o /tmp/al-feed.sh https://raw.githubusercontent.com/airplanes-live/feed/main/install.sh && sudo bash /tmp/al-feed.sh` | airplanes.live/myfeed |
+
+## Verifisert
+
+Innholdet over er sjekket direkte mot offisiell dokumentasjon og
+kildekode (ikke bare antatt korrekt):
+
+- **adsb.lol**: `feed.sh`-kommandoen, spørsmål om koordinater/høyde, og
+  at API-nøkkel foreløpig *ikke* er påkrevd for å mate ("in the future
+  you will require an API key") er bekreftet mot adsb.lol sine egne
+  docs. Claim-prosessen via `my.adsb.lol` med stasjonens UUID er
+  bekreftet via community-kilder (samme UUID kan gjenbrukes på tvers av
+  ADSBExchange/adsb.lol/airplanes.live hvis du allerede mater et av dem).
+- **adsb.fi**: `feed.sh`-kommandoen og portene 30004 (ADS-B)/31090
+  (MLAT) er bekreftet mot `adsbfi/adsb-fi-scripts` på GitHub.
+- **airplanes.live**: installasjonsskriptet er bekreftet mot
+  `airplanes-live/feed` på GitHub. **Rettet fra opprinnelig utkast**:
+  `myfeed`-siden krever ikke innlogging — den viser status basert på
+  IP-adressen til nettleseren, og du må se den fra samme nettverk som
+  mottakeren.
 
 ## Kilder
 
