@@ -43,9 +43,23 @@ høyden fra før).
 som aktivt matende.
 
 **Krav den API-nøkkelen**: gå til https://my.adsb.lol og "claim" stasjonen
-din (knyttes til UUID-en feed-skriptet genererte) - det er dette som gir
-tilgang til API-nøkkel og feeder-only-funksjoner (re-api, MLAT-kart, osv.)
-når/hvis adsb.lol krever nøkkel for søke-endepunktet vi bruker.
+din (knyttes til UUID-en feed-skriptet genererte, ligger i
+`/usr/local/share/adsblol/adsblol-uuid`) - det er dette som gir tilgang
+til API-nøkkel og feeder-only-funksjoner (re-api, MLAT-kart, osv.) når/hvis
+adsb.lol krever nøkkel for søke-endepunktet vi bruker.
+
+> ⚠️ **Kjent, ufarlig oppstartsfeil i MLAT-loggen**: rett etter
+> installasjon/omstart kan `journalctl -u adsblol-mlat` vise
+> `Beast-format results connection with 127.0.0.1:31421: [Errno 111]
+> Connection refused`. Dette er samme type race condition som mellom
+> readsb og fr24feed etter reboot (se README.md): mlat-klienten prøver å
+> koble seg til `adsblol-feed`-tjenestens lokale resultatport (31421) før
+> den tjenesten har rukket å åpne porten. Den kobler seg selv til innen
+> 15-30 sekunder (`connection established`), og MLAT begynner å levere
+> posisjoner normalt (`Results: X positions/minute` øker gradvis over de
+> første 10-15 minuttene). Ingen handling nødvendig - sjekk bare at
+> `Receiver: connected` og økende `positions/minute` dukker opp i
+> `journalctl -u adsblol-mlat -f` noen minutter etter oppstart.
 
 ## 2. adsb.fi
 
