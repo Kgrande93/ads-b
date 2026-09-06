@@ -231,13 +231,25 @@ print(json.dumps(sample, indent=2))
 "
 ```
 
+## Feeding more networks (adsb.lol, adsb.fi, airplanes.live)
+
+Beyond FR24 and OpenSky, the same readsb Beast stream can also feed the
+open, key-free community networks **adsb.lol**, **adsb.fi**, and
+**airplanes.live** — each with its own one-line install script and web
+status page. See [`ADSB-FEEDING.md`](ADSB-FEEDING.md) for the full
+walkthrough (why, prerequisites, install commands, verification steps,
+and a Docker/Ultrafeeder alternative that feeds all three at once).
+
 ## Files
 
-| File           | Description                 |
-| -------------- | --------------------------- |
-| `fr24feed.ini` | FR24 configuration (no key) |
-| `README.md`    | This file                   |
-| `LICENSE`      | LICENSE                     |
+| File                | Description                                          |
+| ------------------- | ----------------------------------------------------- |
+| `fr24feed.ini`       | FR24 configuration (no key)                          |
+| `install.sh`         | Automated FR24/readsb install script                 |
+| `INSTALL_SCRIPT.md`  | Explanation of what `install.sh` does, step by step   |
+| `ADSB-FEEDING.md`    | Guide to feeding adsb.lol, adsb.fi, airplanes.live    |
+| `README.md`          | This file                                             |
+| `LICENSE`            | LICENSE                                               |
 
 ## Useful commands
 
