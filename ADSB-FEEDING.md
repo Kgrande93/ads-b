@@ -28,6 +28,28 @@ Du har allerede en fungerende ADS-B-mottaker som kjører `readsb`,
 datakilde). Alle tre skriptene under legger seg oppå denne installasjonen
 uten å forstyrre det som allerede kjører.
 
+## Kjent fallgruve: `netstat` mangler på Debian 13
+
+Installasjons-/oppdateringsskriptene til alle tre nettverkene (og
+`install-or-update-interface.sh` som adsb.lol bruker for å oppdatere
+feed-oppsettet) bruker internt `netstat` for å sjekke lyttende porter.
+`net-tools`-pakken (som gir `netstat`) er ikke installert som standard på
+Debian 13 - samme type manglende avhengighet som `curl` var for
+tar1090-installasjonen (se hovedoppskriften i README.md).
+
+Unngå feilen ved å installere pakken *før* du kjører feed-skriptene:
+
+```bash
+sudo apt install net-tools -y
+```
+
+> ⚠️ Hvis du allerede har kjørt et feed-/oppdateringsskript og fikk en
+> `netstat: command not found`-feil underveis: installer `net-tools` som
+> over og kjør skriptet på nytt (`sudo bash /usr/local/share/adsblol/git/install-or-update-interface.sh`
+> for adsb.lol). Feilen stopper vanligvis ikke selve feedingen - sjekk med
+> `sudo systemctl status adsblol-feed adsblol-mlat` om tjenestene likevel
+> kjører før du antar noe er ødelagt.
+
 ## 1. adsb.lol (prioritert - dette er kilden vi bruker for flysøket)
 
 ```bash
